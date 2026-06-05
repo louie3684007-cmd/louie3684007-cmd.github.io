@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>什麼是道和三寶</title>
+    <style>
+        /* ========================================== */
+        /* ⬇️⬇️⬇️ 這裡可以調整字體大小與基本顏色 ⬇️⬇️⬇️ */
+        /* ========================================== */
+        :root {
+            --font-size-title: 32px;  /* 標題字體大小 */
+            --font-size-text: 20px;   /* 一般說明文字大小 */
+            --font-size-btn: 13px;    /* 按鈕字體大小 */
+            --color-main: #00ffcc;    /* 主要點綴顏色 */
+            --color-bright-face: #00f5ff; /* 清晰人臉線條顏色 */
+            --color-bg: #0d0d12;      /* 背景顏色 */
+        }
+        /* ========================================== */
+        /* ⬆️⬆️⬆️ 字體設定結束 ⬆️⬆️⬆️ */
+        /* ========================================== */
+
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background-color: var(--color-bg); color: #fff;
+            font-family: '標楷體', sans-serif; overflow: hidden;
+        }
+
+        .screen {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: none; flex-direction: column; align-items: center; justify-content: center;
+            padding: 20px; box-sizing: border-box; text-align: center; z-index: 10;
+        }
+        .screen.active { display: flex; }
+
+        h1 { font-size: var(--font-size-title); color: var(--color-main); margin-top: 0; margin-bottom: 20px; text-shadow: 0 0 10px var(--color-main); }
+        
+        p, .text-box { 
+            font-size: var(--font-size-text); 
+            line-height: 2; 
+            margin-top: 0;
+            margin-bottom: 20px; 
+            max-width: 600px; 
+            white-space: pre-wrap; 
+        }
+        
+        button {
+            background: linear-gradient(45deg, #0099ff, var(--color-main));
+            color: black; border: none; padding: 12px 24px; border-radius: 25px;
+            font-size: var(--font-size-btn); font-weight: bold; cursor: pointer; margin: 10px;
+            box-shadow: 0 4px 15px rgba(0, 255, 204, 0.4); transition: 0.2s;
+        }
+        button:hover { transform: scale(1.05); }
+
+        .prev-btn {
+            position: absolute; bottom: 20px; left: 20px;
+            background: rgba(255, 255, 255, 0.1); border: 1px solid #aaa; color: #fff;
+            padding: 8px 16px; border-radius: 15px; cursor: pointer; font-size: 14px; z-index: 100;
+        }
+        .prev-btn:hover { background: rgba(255, 255, 255, 0.3); }
+
+        /* 太極圖動畫 */
+        .taiji {
+            width: 140px; height: 140px; border-radius: 50%;
+            background: linear-gradient(to right, #fff 50%, #000 50%);
+            border: 2px solid #fff; position: relative; cursor: pointer;
+            animation: spin 10s linear infinite; margin-bottom: 20px;
+            flex-shrink: 0;
+        }
+        .taiji::before {
+            content: ''; position: absolute; top: 0; left: 25%; width: 50%; height: 50%;
+            background: #fff; border-radius: 50%; border: 15px solid #000; box-sizing: border-box;
+        }
+        .taiji::after {
+            content: ''; position: absolute; bottom: 0; left: 25%; width: 50%; height: 50%;
+            background: #000; border-radius: 50%; border: 15px solid #fff; box-sizing: border-box;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* 長髮側臉輪廓呼吸動畫結構 */
+        .breath-container { width: 220px; height: 180px; position: relative; margin: 15px auto; }
+        .head-profile {
+            width: 120px; height: 150px; background: linear-gradient(135deg, rgba(0, 245, 255, 0.25), rgba(0, 153, 255, 0.1)); 
+            border: 2px solid var(--color-bright-face); position: absolute; left: 25px; top: 10px;
+            clip-path: path('M 10,140 C 5,110 2,80 8,50 C 14,20 35,5 65,8 C 75,10 82,18 80,25 C 78,32 72,36 74,42 C 76,46 88,46 85,53 C 82,58 74,57 74,62 C 74,66 68,70 60,73 C 52,75 54,95 50,140 Z');
+            box-shadow: 0 0 25px rgba(0, 245, 255, 0.4);
+        }
+        .head-profile::before {
+            content: ''; position: absolute; width: 100%; height: 100%; left: -10px; top: 0;
+            background: linear-gradient(to right, rgba(0,0,0,0.8) 0%, rgba(0,245,255,0.15) 70%, transparent 100%);
+            border-left: 3px solid var(--color-bright-face);
+        }
+        .lung {
+            width: 28px; height: 38px; background: rgba(0, 153, 255, 0.4); border-radius: 40% 40% 30% 30%;
+            position: absolute; left: 52px; top: 90px; z-index: 6;
+            animation: lungScaleBreathe 4s infinite ease-in-out;
+        }
+        .air-stream-svg {
+            position: absolute; width: 100px; height: 60px; right: 45px; top: 22px; z-index: 5;
+            fill: none; stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 100;
+            animation: airArcFlow 4s infinite ease-in-out;
+        }
+        @keyframes lungScaleBreathe {
+            0%, 100% { transform: scale(1); background: rgba(0, 153, 255, 0.4); box-shadow: 0 0 0px transparent; }
+            50% { transform: scale(1.25); background: rgba(0, 255, 204, 0.65); box-shadow: 0 0 15px var(--color-main); }
+        }
+        @keyframes airArcFlow {
+            0% { stroke: #0099ff; stroke-width: 4; stroke-dashoffset: 100; opacity: 0; }
+            20% { stroke: var(--color-bright-face); stroke-width: 5; opacity: 1; }
+            45% { stroke-dashoffset: 0; opacity: 0; }
+            50% { stroke: #ff5500; stroke-width: 4; stroke-dashoffset: 0; opacity: 0; }
+            70% { stroke: #ffaa00; stroke-width: 5; opacity: 1; }
+            95% { stroke-dashoffset: -100; opacity: 0; }
+            100% { stroke-dashoffset: -100; opacity: 0; }
+        }
+
+        /* 台灣道路標誌與選單 */
+        .road-tier-container { display: flex; flex-direction: column; gap: 10px; align-items: center; width: 100%; max-width: 660px; }
+        .tier-label { font-size: 11px; color: #ffcc00; font-weight: bold; background: rgba(255,255,255,0.05); padding: 3px 10px; border-radius: 8px; margin-bottom: 2px; }
+        .road-tier { width: 100%; border: 1px solid rgba(255,255,255,0.1); padding: 8px; border-radius: 8px; box-sizing: border-box; background: rgba(255,255,255,0.01); }
+        .road-tier.top-tier { border-color: var(--color-main); background: rgba(0, 255, 204, 0.01); }
+        .road-tier.top-tier .grid-options { display: flex; justify-content: center; }
+        .road-tier.top-tier .grid-item { width: 180px; padding: 6px; }
+        
+        .road-tier .grid-options { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; width: 100%; }
+        .road-tier .grid-item { border: 1px solid #444; background: rgba(0,0,0,0.4); padding: 8px; border-radius: 6px; cursor: pointer; transition: 0.2s; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .road-tier .grid-item:hover, .road-tier .grid-item.selected { border-color: var(--color-main); background: rgba(0,255,204,0.1); }
+        .road-tier .grid-item span { font-size: 12px; font-weight: bold; line-height: 1.3; margin-top: 4px; }
+        
+        .road-sign-container { width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; margin-bottom: 2px; }
+        .tw-meihua { width: 38px; height: 38px; background: #fff; border: 2px solid #1b5e20; clip-path: url(#meihua-path); display: flex; align-items: center; justify-content: center; color: #000; font-weight: bold; font-size: 15px; }
+        .tw-shield-red { width: 36px; height: 36px; background: #b71c1c; border: 2px solid #0d47a1; border-top: 3px solid #0d47a1; clip-path: polygon(0% 0%, 100% 0%, 100% 35%, 50% 100%, 0% 35%); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: bold; font-size: 13px; }
+        .tw-shield-blue { width: 36px; height: 36px; background: #0d47a1; border: 2px solid #fff; border-top: 3px solid #fff; clip-path: polygon(0% 0%, 100% 0%, 100% 35%, 50% 100%, 0% 35%); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: bold; font-size: 13px; }
+        .tw-square-black { width: 34px; height: 34px; background: #fff; border: 2px solid #000; border-radius: 3px; display: flex; align-items: center; justify-content: center; color: #000; font-weight: bold; font-size: 13px; }
+        .tw-rect-black { width: 44px; height: 32px; background: #fff; border: 2px solid #000; border-radius: 3px; display: flex; align-items: center; justify-content: center; color: #000; font-weight: bold; font-size: 12px; gap: 2px; }
+
+        .live-desc-box { min-height: 45px; height: auto; padding: 5px; color: #ffcc00; font-weight: bold; font-size: 15px; margin: 5px auto; display: flex; align-items: center; justify-content: center; white-space: pre-wrap; max-width: 600px; }
+
+        /* 交通工具卡片 */
+        .vehicle-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; width: 100%; max-width: 680px; }
+        .vehicle-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01)); border: 2px solid #444; border-radius: 14px; padding: 20px 10px; cursor: pointer; transition: all 0.3s ease; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 6px 12px rgba(0,0,0,0.6);
+        }
+        .vehicle-icon { font-size: 50px; margin-bottom: 12px; transition: transform 0.2s; }
+        .vehicle-name { font-size: 16px; font-weight: bold; color: #aaa; }
+        .vehicle-card:hover { border-color: #0099ff; background: rgba(0,153,255,0.08); }
+        .vehicle-card:hover .vehicle-icon { transform: scale(1.15); }
+        .vehicle-card.selected { border-color: var(--color-main); background: rgba(0,255,204,0.12); box-shadow: 0 0 15px rgba(0,255,204,0.3); }
+        .vehicle-card.selected .vehicle-name { color: var(--color-main); }
+
+        /* 3D 行駛背景 */
+        #road-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; perspective: 500px; overflow: hidden; display: none; opacity: 0.4; }
+        .road-plane { position: absolute; bottom: -30%; left: -50%; width: 200%; height: 160%; background: #09090d; transform: rotateX(72deg); transition: transform 1.5s ease-in-out; }
+        .tarmac { position: absolute; left: 25%; width: 50%; height: 100%; background: #1c1c24; box-shadow: 25px 0 40px rgba(0,0,0,0.6), -25px 0 40px rgba(0,0,0,0.6); transition: all 1.2s ease-in-out; border-left: 0px solid transparent; border-right: 0px solid transparent; }
+        .layer-top { transform: rotateX(72deg) translateZ(0px); }
+        .layer-bottom-mortal { transform: rotateX(76deg) translateZ(-80px) scale(0.9); }
+
+        .road-lines { position: absolute; left: 50%; bottom: 0; width: 8px; height: 200%; background: repeating-linear-gradient(to bottom, transparent 0%, transparent 25px, #ffcc00 25px, #ffcc00 50px); transform: translateX(-50%); animation: drive 0.8s linear infinite; }
+        .lines-paused { animation-play-state: paused !important; }
+        @keyframes drive { from { bottom: 0; } to { bottom: -75px; } }
+        
+        /* 塞車背景景物層 */
+        .traffic-jam-layer { position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; z-index: 1; display: none; font-size: 40px; }
+        .jam-car { position: absolute; left: 46%; animation: carVibrate 0.1s infinite alternate; }
+        @keyframes carVibrate { from { transform: translate(0, 0); } to { transform: translate(1px, 1px); } }
+
+        .road-plane.leave-ramp { transform: rotateX(76deg) rotateY(18deg) translateX(-15%) translateZ(-80px) scale(0.9); }
+        .road-plane.leave-ramp .tarmac { border-right: 0px solid transparent !important; background: #222 !important; }
+        #return-highway-btn { position: absolute; top: 20px; left: 20px; background: rgba(0,0,0,0.8); border: 2px solid #ffcc00; color: #ffcc00; padding: 10px 15px; border-radius: 10px; cursor: pointer; z-index: 100; display: none; font-weight: bold; }
+
+        /* 交通工具動畫 */
+        .vehicle-anim { font-size: 70px; position: absolute; bottom: 15%; left: 50%; transform: translateX(-50%); z-index: 2; display: none; }
+        .vehicle-moving { animation: bounce 0.5s infinite alternate; }
+        .vehicle-paused { animation-play-state: paused !important; }
+        @keyframes bounce { from { bottom: 15%; } to { bottom: 17%; } }
+        .vehicle-ups-downs { animation: upsDowns 3s infinite; }
+        @keyframes upsDowns { 0% {bottom: 15%; transform: translateX(-50%) rotate(-10deg);} 50% {bottom: 25%; transform: translateX(-50%) rotate(10deg);} 100% {bottom: 15%; transform: translateX(-50%) rotate(-10deg);} }
+
+        #obstacle { font-size: 80px; position: absolute; bottom: 35%; left: 50%; transform: translateX(-50%); display: none; z-index: 2;}
+
+        /* 手勢大按鈕排版 */
+        .hand-btn-box { display: flex; flex-direction: column; width: 100%; max-width: 450px; gap: 14px; margin: 10px auto; }
+        .hand-btn { 
+            background: rgba(255, 255, 255, 0.05); color: #fff; border: 2px solid #555; 
+            padding: 14px 20px; border-radius: 12px; font-size: 15px; font-weight: bold; 
+            cursor: pointer; transition: 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.4); text-align: center;
+        }
+        .hand-btn:hover { border-color: var(--color-main); background: rgba(0, 255, 204, 0.08); }
+        .hand-btn.selected-correct { border-color: var(--color-main) !important; background: rgba(0, 255, 204, 0.4) !important; box-shadow: 0 0 15px var(--color-main); }
+
+        /* 文字面板自適應 + 貼頂校正 */
+        .scroll-panel {
+            background: rgba(0,0,0,0.85); border: 1px solid var(--color-main); 
+            padding: 12px 22px 22px 22px; /* 緊湊上邊距 */
+            border-radius: 10px;
+            height: auto; max-height: 42vh; overflow-y: auto; text-align: center; width: 90%; max-width: 600px; z-index: 10; margin: 0 auto 20px auto;
+            white-space: pre-wrap; line-height: 1.8; letter-spacing: 0.5px; display: block;
+        }
+        .scroll-panel p:first-of-type, .scroll-panel br:first-of-type {
+            margin-top: 0 !important; padding-top: 0 !important;
+        }
+
+        /* 第一寶人臉框 */
+        .face-container {
+            position: relative; width: 300px; height: 380px; border: 2px solid var(--color-main); border-radius: 20px;
+            background-image: url('https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?fit=crop&w=400&h=500&crop=faces');
+            background-size: 180%; background-position: center 15%; overflow: hidden; margin: 0 auto 20px auto;
+        }
+        .click-area {
+            position: absolute; left: 50%; transform: translate(-50%, -50%); display: flex; align-items: center; justify-content: center;
+            background: rgba(0, 255, 204, 0.1); border: 2px dashed var(--color-main); border-radius: 50px; cursor: pointer;
+            color: transparent; /* 💡 初始文字維持隱形 */
+        }
+        .click-area.selected-correct { background: rgba(0, 255, 204, 0.6) !important; border-style: solid; color: #fff !important; }
+        .click-area:hover { background: rgba(0, 255, 204, 0.4); }
+        
+        /* 🎯 您調整好、最精準的人臉按鈕高度位置 */
+        #area-forehead { top: 35%; width: 70px; height: 35px; } 
+        #area-eyes { top: 50%; width: 70px; height: 25px; }
+
+        .grid-item.selected-correct { border-color: var(--color-main) !important; background: rgba(0,255,204,0.3) !important; }
+
+        /* 結局遮罩 */
+        #heaven-bg { position: absolute; top:0; left:0; width:100%; height:100%; background: radial-gradient(circle, #fffbcc 0%, #ffcc00 100%); opacity: 0; pointer-events: none; transition: 2s; z-index: 999; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box;}
+        #heaven-text { font-size: var(--font-size-title); font-weight: bold; text-shadow: 0 0 15px rgba(0,0,0,0.6); max-width: 600px; line-height: 1.8; text-align: center; white-space: pre-wrap;}
+        .ending-btn-group { display: flex; gap: 15px; margin-top: 30px; }
+    </style>
+</head>
+<body>
+
+<svg width="0" height="0">
+    <defs>
+        <clipPath id="meihua-path" clipPathUnits="objectBoundingBox">
+            <path d="M 0.5,0.05 C 0.4,0.05 0.33,0.14 0.35,0.24 C 0.23,0.18 0.1,0.24 0.08,0.36 C 0.06,0.48 0.16,0.58 0.26,0.56 C 0.18,0.68 0.22,0.84 0.34,0.9 C 0.44,0.94 0.56,0.94 0.66,0.9 C 0.78,0.84 0.82,0.68 0.74,0.56 C 0.84,0.58 0.94,0.48 0.92,0.36 C 0.9,0.24 0.77,0.18 0.65,0.24 C 0.67,0.14 0.6,0.05 0.5,0.05 Z"/>
+        </clipPath>
+    </defs>
+</svg>
+
+<div id="road-bg">
+    <div class="road-plane" id="road-plane">
+        <div class="tarmac" id="main-tarmac">
+            <div class="road-lines" id="road-lines"></div>
+        </div>
+    </div>
+</div>
+<div id="return-highway-btn" onclick="returnToHighway()">條條大路通天堂，點此駛回最上層天路</div>
+<div class="vehicle-anim" id="active-vehicle"></div>
+<div id="obstacle">🚧</div>
+
+<div class="traffic-jam-layer" id="traffic-jam-layer">
+    <div class="jam-car" style="bottom: 30%; left: 45%;">🚗</div>
+    <div class="jam-car" style="bottom: 45%; left: 51%;">🚕</div>
+    <div class="jam-car" style="bottom: 55%; left: 43%;">🚚</div>
+    <div class="jam-car" style="bottom: 68%; left: 48%;">🚌</div>
+</div>
+
+<div class="screen active" id="screen-1">
+    <h1>何謂"道"?<br>何謂"三寶"?</h1>
+    <div style="font-size: 60px; color: var(--color-main); margin-bottom: 30px; filter: drop-shadow(0 0 15px var(--color-main));">✨</div>
+    <button onclick="nextScreen('15')">開始修道之旅</button>
+</div>
+
+<div class="screen" id="screen-15">
+    <h1 style="margin-bottom: 25px;">一陰一陽之謂道</h1>
+    <div class="taiji"></div>
+    <div class="text-box">意指世間萬物陰陽對立、動態互轉的規律就是「道」
+因為宇宙萬物皆包含矛盾對立的兩面（如男女、上下、吉凶）
+都是一正一反、一陰一陽地存在
+所以世間沒有絕對、恆定不變的狀態，轉化是常態。</div>
+    <div>
+        <button onclick="nextScreen(2)">道還能是什麼?</button>
+    </div>
+    <button class="prev-btn" onclick="nextScreen('1')">⬅️ 返回上一步</button>
+</div>
+
+<div class="screen" id="screen-2">
+    <h1>那"道"既然沒有絕對或恆定不變的狀態<br>那什麼是"道"呢?</h1>
+    <div class="breath-container">
+        <div class="head-profile"></div>
+        <div class="lung"></div>
+        <svg class="air-stream-svg" viewBox="0 0 100 60">
+            <path d="M 90,10 Q 50,55 5,28" stroke="#00f5ff" stroke-width="4" fill="none" id="arc-path" />
+        </svg>
+    </div>
+    <p>道亦在一呼一吸之間</p>
+    <p>~~道法自然~~百姓日用而不知：「道」從不隱藏
+可以是空氣、是重力、是推動萬物運轉的無形巨手
+我們生於道、長於道，如同魚活在水中卻不知有水
+唯有當我們放慢腳步，透過專注日常的呼吸
+才能在稀鬆平常的「日用」中，猛然驚覺「道」一直都在我們身邊。</p>
+    <button id="btn-next-step2" onclick="nextScreen('3')">前往修道之路</button>
+    <button class="prev-btn" onclick="nextScreen('15')">⬅️ 返回上一步</button>
+</div>
+
+<div class="screen" id="screen-3">
+    <h1>走上修道之路</h1>
+    <div class="scroll-panel">我們已經了解"道"就在生活中~~
+那我們在修的"道"又是什麼呢？
+其實阿！修道就是在修補一條能讓自己回去天堂的路
+但是回去的道路有千萬條我們該走哪一條呢？</div>
+    <button onclick="nextScreen(4)">選擇自己要走的修道路</button>
+    <button class="prev-btn" onclick="nextScreen(2)">⬅️ 返回上一步</button>
+</div>
+
+<div class="screen" id="screen-4" style="justify-content: flex-start; padding-top: 2vh;">
+    <h1 style="margin-bottom: 2px;">回天之路千百條，您要選擇哪一條?</h1>
+    
+    <div class="live-desc-box" id="road-live-desc">💡 請點選下方道路查看修行特點...</div>
+    
+    <div class="road-tier-container">
+        <div class="road-tier top-tier">
+            <div class="tier-label">👑 最上層修行天路 (直達天堂的高速公路)</div>
+            <div class="grid-options">
+                <div class="grid-item" onclick="selectRoad('highway')">
+                    <div class="road-sign-container"><div class="tw-meihua">1</div></div>
+                    <span>全真白陽道</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="road-tier">
+            <div class="tier-label">🏛️ 一般修行道路(各種宗教的修行路)</div>
+            <div class="grid-options">
+                <div class="grid-item" onclick="selectRoad('expressway')">
+                    <div class="road-sign-container"><div class="tw-shield-red">61</div></div>
+                    <span>儒教 (快速道路)</span>
+                </div>
+                <div class="grid-item" onclick="selectRoad('provincial')">
+                    <div class="road-sign-container"><div class="tw-shield-blue">1</div></div>
+                    <span>道教 (省道)</span>
+                </div>
+                <div class="grid-item" onclick="selectRoad('city')">
+                    <div class="road-sign-container"><div class="tw-square-black" style="border-color:#0d47a1;">101</div></div>
+                    <span>釋教 (市道)</span>
+                </div>
+                <div class="grid-item" onclick="selectRoad('county')">
+                    <div class="road-sign-container"><div class="tw-square-black">101</div></div>
+                    <span>基督教 (縣道)</span>
+                </div>
+                <div class="grid-item" onclick="selectRoad('district')">
+                    <div class="road-sign-container"><div class="tw-rect-black"><span>竹</span><span>1</span></div></div>
+                    <span>回教 (區道)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <button id="btn-road-next" style="display:none;" onclick="nextScreen('5')">確認修行道路</button>
+    <button class="prev-btn" onclick="nextScreen('3')">⬅️ 返回上一步</button>
+</div>
+
+<div class="screen" id="screen-5">
+    <div class="text-box" id="general-desc-top">相信各位學長剛剛都選擇好自己認為的可以最快回去的道路
+所謂的修道就是我們邊修理道路邊前進，而道路的終點就是天堂~
+而這條路走的方式有很種，因此我們要選擇自己想使用的交通工具。</div>
+    
+    <div class="vehicle-grid">
+        <div class="vehicle-card" id="v-car" onclick="selectVehicle('car')">
+            <div class="vehicle-icon">🚗</div>
+            <div class="vehicle-name">汽車</div>
+        </div>
+        <div class="vehicle-card" id="v-bike" onclick="selectVehicle('bike')">
+            <div class="vehicle-icon">🏍️</div>
+            <div class="vehicle-name">機車(歐兜賣)</div>
+        </div>
+        <div class="vehicle-card" id="v-bicycle" onclick="selectVehicle('bicycle')">
+            <div class="vehicle-icon">🚲</div>
+            <div class="vehicle-name">腳踏車</div>
+        </div>
+        <div class="vehicle-card" id="v-walk" onclick="selectVehicle('walk')">
+            <div class="vehicle-icon">🚶</div>
+            <div class="vehicle-name">走路</div>
+        </div>
+    </div>
+    
+    <div id="vehicle-desc" class="scroll-panel" style="display:none; margin-top:20px;"></div>
+    <button id="btn-vehicle-next" style="display:none;" onclick="startJourney()">啟程 往天堂邁進囉!</button>
+    <button class="prev-btn" onclick="nextScreen('4')">⬅️ 返回上一步</button>
+</div>
+
+<div class="screen" id="screen-6">
+    <h1>⚠️ 再前往天堂的路途中遭遇考驗(魔考)</h1>
+    <div class="scroll-panel" id="diff-text"></div>
+    <p>人生的困難讓我們動彈不得，沒辦法順利前進的時候該怎麼辦呢?</p>
+    <div style="display: flex; flex-direction: column; width: 100%; max-width: 400px; gap: 12px;">
+        <button onclick="handleDiffChoice(1)">怨天尤人並開始抱怨別人</button>
+        <button onclick="handleDiffChoice(2)">使用三寶安頓身心</button>
+        <button onclick="handleDiffChoice(3)">隨緣啦~ 生死有命富貴在天</button>
+    </div>
+    <div id="diff-hint" style="color:#ff4444; margin-top:10px; font-weight:bold; text-shadow: 0 0 5px #000;"></div>
+    <button class="prev-btn" onclick="stopJourneyToPrev()">⬅️ 返回上一步</button>
+</div>
+
+<div class="screen" id="screen-7">
+    <h1>何謂三寶</h1>
+    <div class="scroll-panel" id="treasure-intro"></div>
+    <button onclick="nextScreen('8')">進入第一寶：玄關</button>
+    <button class="prev-btn" onclick="nextScreen('6')">⬅️ 返回上一步</button>
+</div>
+
+<div class="screen" id="screen-8">
+    <h1>第一寶：玄關竅</h1>
+    <div class="face-container">
+        <div class="click-area" id="area-forehead" onclick="checkFace('forehead')" style="color: transparent; font-size: 14px;">額頭</div>
+        <div class="click-area" id="area-eyes" onclick="checkFace('eyes')" style="color: transparent; font-size: 11px; line-height: 1.2;">兩眼連線<br>交會處</div>
+    </div>
+    <div id="face-hint" style="color:var(--color-main); font-weight:bold; margin-bottom:15px; text-shadow: 0 0 5px #000;"></div>
+    <div class="scroll-panel" id="t1-desc" style="display:none;"></div>
+    <button id="btn-t1-next" style="display:none;" onclick="nextScreen('9')">進入第二寶</button>
+    <button class="prev-btn" onclick="nextScreen('7')">⬅️ 返回上一步</button>
+</div>
+
+<div class="screen" id="screen-9">
+    <h1>第二寶：合同(佛手印)</h1>
+    <div class="hand-btn-box">
+        <div class="hand-btn" id="hb-1" onclick="checkHand(1)">🙏 雙手合十(紅陽期的手勢)</div>
+        <div class="hand-btn" id="hb-2" onclick="checkHand(2)">子亥相抱(佛手印)</div>
+        <div class="hand-btn" id="hb-3" onclick="checkHand(3)">👌 各種宗教的手勢(蓮花指、阿門)</div>
+    </div>
+    <div id="hand-hint" style="color:var(--color-main); font-weight:bold; margin-top:15px; text-shadow: 0 0 5px #000;"></div>
+    <div class="scroll-panel" id="t2-desc" style="display:none; margin-top:15px;"></div>
+    <button id="btn-t2-next" style="display:none;" onclick="nextScreen(10)">進入第三寶</button>
+    <button class="prev-btn" onclick="nextScreen('8')">⬅️ 返回上一步</button>
+</div>
+
+<div class="screen" id="screen-10">
+    <h1>第三寶：無字真言</h1>
+    <div class="scroll-panel" id="t3-desc"></div>
+    <button onclick="nextScreen('11')">三寶使用教學</button>
+    <button class="prev-btn" onclick="nextScreen('9')">⬅️ 返回上一步</button>
+</div>
+
+<div class="screen" id="screen-11">
+    <h1>三寶使用說明</h1>
+    <div class="scroll-panel" id="t-usage"></div>
+    <button onclick="resumeJourney()">困難解決了~~繼續前進</button>
+    <button class="prev-btn" onclick="nextScreen('10')">⬅️ 返回上一步</button>
+</div>
+
+<div class="screen" id="screen-12">
+    <h1>🚧 遭遇巨大的業力路障！</h1>
+    <div class="scroll-panel" id="obstacle-question"></div>
+    <button onclick="resolveObstacle(1)">1. 堅持修道，用渡人和吃素的功德來化消業力</button>
+    <button onclick="resolveObstacle(2)">2. 認為已經很誠心祈求但沒感應和沒效果，離開修道的路</button>
+    <button class="prev-btn" onclick="nextScreen('11')">⬅️ 返回上一步</button>
+</div>
+
+<div class="screen" id="screen-13">
+    <h1>🛑 下交流道(離開修道的高速天路)：紅塵俗世</h1>
+    <div class="scroll-panel" id="leave-desc"></div>
+    <button onclick="finalEnding(1)">1. 尚未找回修道的真諦，還不想走回去天堂的路</button>
+    <button onclick="finalEnding(2)">2. 明理後再度回到全真白陽的高速天路</button>
+    <button class="prev-btn" onclick="nextScreen('12')">⬅️ 返回上一步</button>
+</div>
+
+<div id="heaven-bg">
+    <div id="heaven-text"></div>
+    <div class="ending-btn-group">
+        <button id="ending-prev-btn" style="background: rgba(0,0,0,0.6); border: 1px solid #fff; color:#fff;" onclick="backFromEnding()">⬅️ 返回上一步</button>
+        <button id="restart-btn" style="background: linear-gradient(45deg, #fff, #ffcc00); color: #000;" onclick="window.location.reload();">🔄 重新開始修行</button>
+    </div>
+</div>
+
+<script>
+    const USER_CONFIG = {
+        vehicleDesc: {
+            "car": "【汽車】\n當點傳師幫上天做事情 >> 領有天命可以讓濟公老師藉由我們的身體，幫有緣人點道讓他們也能領到回天的護照\n吃素(非鍋邊素、海鮮素、五辛素等) >> 吃素開始在跟別人結善緣(放生+慈悲心的功德)\n修持自身脾氣毛病+做善良的事情(不道德的事情不要做) >> 僅從自身做起不影響別人，這也是一種修行+功德的展現\n渡人來拜拜、成全後學、多做道務 >> 主動去和別人結善緣，引領更多人一起來走修行天路(回天堂)\n\n相信各位學長可以看到有很多種交通工具，選擇哪一種工具取決於妳要如何做？\n各位學長在今年都已經領有天命，那表示我們肯定有在吃素、渡人+成全+做道務並在努力改善自己的脾氣毛病，我們才能承蒙上天慈悲願意給我們這個機會當點傳師，來協助上天渡回更多的眾生~~",
+            "bike": "【機車】\n吃素(非鍋邊素、海鮮素、五辛素等) >> 吃素開始在跟別人結善緣(放生+慈悲心的功德)\n修持自身脾氣毛病+做善良的事情(不道德的事情不要做) >> 僅從自身做起不影響別人，這也是一種修行+功德的展現\n渡人來拜拜、成全後學、多做道務 >> 主動去和別人結善緣，引領更多人一起來走修行天路(回天堂)\n\n當我們做得越多自然走得越快，也就越快回去天堂~~",
+            "bicycle": "【腳踏車】\n吃素(非鍋邊素、海鮮素、五辛素等) >> 吃素開始在跟別人結善緣(放生+慈悲心的功德)\n修持自身脾氣毛病+做善良的事情(不道德的事情不要做) >> 僅從自身做起不影響別人，這也是一種修行+功德的展現\n\n當我們做得越多自然走得越快，也就越快回去天堂~~",
+            "walk": "【靠雙腳走完這條修行路】\n修持好自身的脾氣毛病+做善良的事情(不道德的事情不要做) >> 僅從自身做起不影響別人，這也是一種修行+功德的展現\n當我們做得越多自然走得越快，也就越快回去天堂~~"
+        },
+        difficultyText: "我們在人生以及修道的路上，一定會遭遇到許多意想不到的困難...如同畫面呈現的前方路況塞車結果卡在車陣中了！\n生活或工作上遇到煩心的事情，導致心神不寧\n與週遭的人(家人/親人/同事/朋友...)發生爭執心情不順\n不知道如何解決困難",
+        diffWrongHint1: "怨天尤人應該是無法從根本解決問題喲！請再想想還有什麼更好的辦法。",
+        diffWrongHint3: "隨緣可能就會隨波逐流(跟隨滾滾紅塵 晃來晃去~) 我們走在修行路上應該要選擇更有智慧的方式！！",
+        treasureIntroText: "「何謂三寶??」多方探詢後，想分享以下的見解讓各位學長參考\n 壹. 三寶就是上天賜予眾生，修道時候能使用的工具，主要幫助眾生解決修道路上遇到的各種困難\n 貳. 三寶也像一顆種子，可以讓我們探索根本，找回赤子之心就能回歸本性；這過程經歷的種種都是長出的根或葉子，就好像我們用三寶延伸去看世界，也是因為了解這個源頭才能遇萬難也抵萬難\n 叁. 三寶亦是與仙佛溝通的媒介，讓我們有個可以跟仙佛產生聯繫的通路",
+        treasure1Desc: "Bingo！！\n玄關竅：靈魂進出的大門，人回去後靈魂要從這個正門出來後往天堂而去\n仙佛幫我們在這邊打開門以外也點了一盞光明燈，可以被動地幫我們防禦外來不好的東西。",
+        treasure1WrongHint: "不對呦！玄關竅並不是在額頭喔~~ 而是在兩眼連線中間最凹陷的地方",
+        treasure2Desc: "Congratulation！！\n合同(佛手印)：就是一把鑰匙可以用來跟上天產生連結，所以當我們歸天要回去天堂的時候，也是要對合同的才知道你是不是上天在等的那個人",
+        treasure2WrongHint: "這不是白陽期的修道手勢喔！請再想看看合同(佛手印)要如何抱起來",
+        treasure3Desc: "無字真言有五個字：\"XXXXX\"，這真言就是一個口號/密語/即刻救援的信號，無論遇到什麼困難都可以使用無字真言，仙佛會瞬間到達身邊來幫助我們~~~",
+        treasureUsageText: "三寶使用時機：1.遇到困難 2.心情煩悶 3.不知如何是好 4.無時無刻\n三寶如何使用：手抱合同放在胸前(看狀況也可以放在肚肚，比較不突兀)，接著心中默念無字真言\"三次\"，白陽弟子XXX，住居(或當下位置)在中華民國(台灣省)XXXXXX，請一尊自己最有緣的仙佛(耶穌、聖母瑪利亞、阿拉、阿彌陀佛、觀世音普薩、濟公老師...都可以)，弟子遇到XXXXX請求仙佛慈悲幫忙，感恩慈悲(點五個頭答謝！)",
+        obstacleQuestion: "修道的路長途漫漫，突然出現了巨大的業力路障！\n脫離輪迴的神聖之路沒有那麼好走，上天總是會降下許多的考驗來測試修道者的真心與誠意。若您今日已在修行路上走了好久好久，卻遇到家裡不順(孩子叛逆、家庭不和、和伴侶有爭執、個性改不好等各種問題，您會想怎麼做呢？\n是否想過這些困難和問題，是不是業力在阻擋你順利回到天堂呢？因為這些冤親債主不願意看到您快樂地跳脫輪迴，又或是純粹是上天在測試我們呢？",
+        leaveHighwayDesc: "看來您已經做出選擇了：\"認為原本走的天路到了盡頭\"所以選擇走下交流道\n然而上天總是慈愛我們每一尊佛子，雖然我們暫時離開了高速天路但是上天中就一直為我們保留再回到高速天路的方式。所以我們這一世求的道生生世世都有效，即使這一輩子沒辦法修道圓滿走不到天路的終點，但是我們再輪迴轉世來修的時候，也能再度走回全真白陽的高速天路。\n當然只要我們這輩子還活著，隨時都可以再回到修行的路上，修道之路永遠為您而開。",
+        endingMortalText: "紅塵滾滾/情路漫漫/高潮迭起 >> 緣分雖然沒有圓滿。\n\n但修道之路隨時為您敞開，盼早日迷途知返~~",
+        endingHeavenText: "功德圓滿(收圓完成) >> 回歸無生理天！"
+    };
+
+    const ROAD_DESCS = {
+        "highway": "「全真白陽道」：萬千條路唯有此路是直達天堂的高速天路！",
+        "expressway": "「道教」：萬千條路中的其中一條，因為限速度比高速公路嚴格所以會比較慢抵達天堂。",
+        "provincial": "「儒教」：日常生活的道路，步伐穩健、依循常理人道前進的漫漫天路。",
+        "city": "「釋教(佛教)」：亞洲普羅大眾的修行路，深入紅塵且考驗重重，因而速度快不起來。",
+        "county": "「基督教」：西方世界的普羅大眾走的修持路線，要有和耶穌相同奉獻的心才能順利回到天堂。",
+        "district": "「回教」：中東阿拉修行路，其路幅最窄且充滿嚴格戒律的鄉間小徑。"
+    };
+
+    let currentRoad = "";
+    let currentVehicle = "";
+    let lastEndingScreenNum = 12; 
+    const vehicles = { "car": "🚗", "bike": "🏍️", "bicycle": "🚲", "walk": "🚶" };
+
+    function nextScreen(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        const target = document.getElementById(`screen-${id}`);
+        if(target) target.classList.add('active');
+    }
+
+    function showTaijiText() { document.getElementById('taiji-text').style.display = 'block'; }
+
+    function selectRoad(roadType) {
+        currentRoad = roadType;
+        document.querySelectorAll('#screen-4 .grid-item').forEach(item => item.classList.remove('selected'));
+        event.currentTarget.classList.add('selected');
+        
+        document.getElementById('road-live-desc').innerText = ROAD_DESCS[roadType];
+        document.getElementById('btn-road-next').style.display = 'inline-block';
+        applyRoadVisuals(roadType);
+    }
+
+    function applyRoadVisuals(type) {
+        const roadPlane = document.getElementById('road-plane');
+        const tarmac = document.getElementById('main-tarmac');
+        const lines = document.getElementById('road-lines');
+        tarmac.style.width = "50%"; tarmac.style.left = "25%"; tarmac.style.background = "#1c1c24";
+        
+        if (type === 'highway') {
+            roadPlane.className = "road-plane layer-top"; 
+            tarmac.style.borderLeft = "20px solid #b0b0b0"; tarmac.style.borderRight = "20px solid #b0b0b0";
+            lines.style.background = "repeating-linear-gradient(to bottom, transparent 0%, transparent 25px, #ffcc00 25px, #ffcc00 50px)";
+        } else {
+            roadPlane.className = "road-plane layer-bottom-mortal";
+            if (type === 'expressway') {
+                tarmac.style.borderLeft = "15px solid #0288d1"; tarmac.style.borderRight = "15px solid #0288d1";
+                lines.style.background = "repeating-linear-gradient(to bottom, transparent 0%, transparent 25px, #ffffff 25px, #ffffff 50px)";
+            } else if (type === 'provincial') {
+                tarmac.style.borderLeft = "6px dashed #555"; tarmac.style.borderRight = "6px dashed #555";
+                lines.style.background = "repeating-linear-gradient(to bottom, transparent 0%, transparent 35px, #ffffff 35px, #ffffff 70px)";
+            } else if (type === 'city') {
+                tarmac.style.width = "40%"; tarmac.style.left = "30%";
+                tarmac.style.borderLeft = "12px dashed #888"; tarmac.style.borderRight = "12px dashed #888";
+                lines.style.background = "repeating-linear-gradient(to bottom, transparent 0%, transparent 20px, #ffcc00 20px, #ffcc00 40px)";
+            } else if (type === 'county') {
+                tarmac.style.width = "35%"; tarmac.style.left = "32.5%";
+                tarmac.style.borderLeft = "5px solid #444"; tarmac.style.borderRight = "5px solid #444";
+                lines.style.background = "repeating-linear-gradient(to bottom, transparent 0%, transparent 30px, #ffffff 30px, #ffffff 60px)";
+            } else if (type === 'district') {
+                tarmac.style.width = "28%"; tarmac.style.left = "36%";
+                tarmac.style.borderLeft = "3px solid #3e2723"; tarmac.style.borderRight = "3px solid #3e2723"; tarmac.style.background = "#2b2b2e";
+                lines.style.background = "repeating-linear-gradient(to bottom, transparent 0%, transparent 40px, #ffffff 40px, #ffffff 50px)";
+            }
+        }
+    }
+
+    function selectVehicle(vType) {
+        currentVehicle = vType;
+        document.querySelectorAll('#screen-5 .vehicle-card').forEach(item => item.classList.remove('selected'));
+        document.getElementById(`v-${vType}`).classList.add('selected');
+        
+        const descPanel = document.getElementById('vehicle-desc');
+        descPanel.style.display = 'block';
+        descPanel.innerHTML = USER_CONFIG.vehicleDesc[vType];
+        document.getElementById('btn-vehicle-next').style.display = 'inline-block';
+    }
+
+    function startJourney() {
+        document.getElementById('road-bg').style.display = 'block';
+        document.getElementById('traffic-jam-layer').style.display = 'block'; 
+        
+        const roadLines = document.getElementById('road-lines');
+        const animChar = document.getElementById('active-vehicle');
+        applyRoadVisuals(currentRoad);
+        
+        roadLines.classList.add('lines-paused'); 
+        animChar.innerText = vehicles[currentVehicle];
+        animChar.style.display = 'block';
+        animChar.className = 'vehicle-anim vehicle-paused'; 
+        
+        if(currentRoad !== 'highway') { document.getElementById('return-highway-btn').style.display = 'block'; }
+        document.getElementById('diff-text').innerHTML = USER_CONFIG.difficultyText;
+        nextScreen(6);
+    }
+
+    function stopJourneyToPrev() {
+        document.getElementById('road-bg').style.display = 'none';
+        document.getElementById('traffic-jam-layer').style.display = 'none';
+        document.getElementById('active-vehicle').style.display = 'none';
+        document.getElementById('return-highway-btn').style.display = 'none';
+        nextScreen(5);
+    }
+
+    function returnToHighway() {
+        currentRoad = 'highway';
+        document.getElementById('return-highway-btn').style.display = 'none';
+        applyRoadVisuals('highway');
+        alert("明心見性亦明理！已順利沿著匝道重新回到最上層的天路！(全真白陽道)");
+    }
+
+    function handleDiffChoice(ans) {
+        const hint = document.getElementById('diff-hint');
+        if(ans === 1) hint.innerText = USER_CONFIG.diffWrongHint1;
+        else if (ans === 3) hint.innerText = USER_CONFIG.diffWrongHint3;
+        else {
+            hint.innerText = "";
+            document.getElementById('treasure-intro').innerHTML = USER_CONFIG.treasureIntroText;
+            nextScreen(7);
+        }
+    }
+
+    // 💡 完美結合點擊後字體顯現與重置透明度的 JavaScript 邏輯控制
+    function checkFace(part) {
+        const hint = document.getElementById('face-hint');
+        const nextBtn = document.getElementById('btn-t1-next');
+        const foreheadEl = document.getElementById('area-forehead');
+        const eyesEl = document.getElementById('area-eyes');
+        
+        // 點擊前，先將字體完全隱形重置
+        foreheadEl.style.color = 'transparent';
+        eyesEl.style.color = 'transparent';
+        document.querySelectorAll('.click-area').forEach(el => el.classList.remove('selected-correct'));
+        
+        if(part === 'eyes') {
+            hint.innerText = "【正確】";
+            eyesEl.classList.add('selected-correct');
+            eyesEl.style.color = '#fff'; // 正確時，亮出白色文字
+            
+            document.getElementById('t1-desc').innerHTML = USER_CONFIG.treasure1Desc;
+            document.getElementById('t1-desc').style.display = 'block';
+            nextBtn.style.display = 'inline-block';
+        } else {
+            hint.innerText = USER_CONFIG.treasure1WrongHint;
+            foreheadEl.style.color = '#fff'; // 點錯時，也亮出被點擊到的文字名稱
+            
+            document.getElementById('t1-desc').style.display = 'none';
+            nextBtn.style.display = 'none';
+        }
+    }
+
+    function checkHand(ans) {
+        const hint = document.getElementById('hand-hint');
+        const nextBtn = document.getElementById('btn-t2-next');
+        document.querySelectorAll('.hand-btn').forEach(el => el.classList.remove('selected-correct'));
+        
+        if(ans === 2) {
+            hint.innerText = "【正確】";
+            document.getElementById(`hb-${ans}`).classList.add('selected-correct');
+            document.getElementById('t2-desc').innerHTML = USER_CONFIG.treasure2Desc;
+            document.getElementById('t2-desc').style.display = 'block';
+            nextBtn.style.display = 'inline-block';
+            document.getElementById('t3-desc').innerHTML = USER_CONFIG.treasure3Desc;
+            document.getElementById('t-usage').innerHTML = USER_CONFIG.treasureUsageText;
+        } else {
+            hint.innerText = USER_CONFIG.treasure2WrongHint;
+            document.getElementById('t2-desc').style.display = 'none';
+            nextBtn.style.display = 'none';
+        }
+    }
+
+    function resumeJourney() {
+        nextScreen(0); 
+        document.getElementById('traffic-jam-layer').style.display = 'none'; 
+        
+        const lines = document.getElementById('road-lines');
+        const vehicle = document.getElementById('active-vehicle');
+        
+        lines.classList.remove('lines-paused'); 
+        vehicle.className = 'vehicle-anim vehicle-moving'; 
+        
+        alert("✨ 因為使用了三寶，感到心平氣和！前方塞車(遭遇的困難)突然疏通(已經解決了)，車輛全速前進！(修道一路順暢)");
+        
+        setTimeout(() => {
+            lines.classList.add('lines-paused');
+            vehicle.className = 'vehicle-anim vehicle-paused';
+            document.getElementById('obstacle').style.display = 'block'; 
+            
+            document.getElementById('obstacle-question').innerHTML = USER_CONFIG.obstacleQuestion;
+            nextScreen(12);
+        }, 3500);
+    }
+
+    function resolveObstacle(ans) {
+        if(ans === 1) {
+            document.getElementById('road-lines').classList.remove('lines-paused');
+            document.getElementById('active-vehicle').classList.remove('vehicle-paused');
+            document.getElementById('obstacle').style.display = 'none';
+            nextScreen(0);
+            setTimeout(() => { lastEndingScreenNum = 12; showFinalMask(USER_CONFIG.endingHeavenText, true); }, 2500);
+        } else {
+            const roadPlane = document.getElementById('road-plane');
+            roadPlane.className = "road-plane leave-ramp"; 
+            document.getElementById('obstacle').style.display = 'none';
+            document.getElementById('return-highway-btn').style.display = 'none'; 
+            document.getElementById('road-lines').classList.remove('lines-paused');
+            document.getElementById('active-vehicle').classList.remove('vehicle-paused');
+            setTimeout(() => {
+                document.getElementById('leave-desc').innerHTML = USER_CONFIG.leaveHighwayDesc;
+                nextScreen(13);
+            }, 1500);
+        }
+    }
+
+    function finalEnding(ans) {
+        nextScreen(0); 
+        if(ans === 1) {
+            const v = document.getElementById('active-vehicle');
+            v.className = 'vehicle-anim vehicle-ups-downs'; 
+            setTimeout(() => { lastEndingScreenNum = 13; showFinalMask(USER_CONFIG.endingMortalText, false); }, 2500);
+        } else {
+            applyRoadVisuals('highway'); 
+            setTimeout(() => { lastEndingScreenNum = 13; showFinalMask(USER_CONFIG.endingHeavenText, true); }, 2000);
+        }
+    }
+
+    window.showFinalMask = function(msg, isHeaven) {
+        const h = document.getElementById('heaven-bg');
+        const t = document.getElementById('heaven-text');
+        t.innerHTML = msg;
+        if(isHeaven) {
+            h.style.background = "radial-gradient(circle, #fffbcc 0%, #ffcc00 100%)";
+            h.style.color = "#2b1d04";
+        } else {
+            h.style.background = "rgba(0,0,0,0.95)";
+            h.style.color = "#fff";
+        }
+        h.style.opacity = 1; h.style.pointerEvents = "auto";
+    }
+
+    function backFromEnding() {
+        const h = document.getElementById('heaven-bg');
+        h.style.opacity = 0; h.style.pointerEvents = "none";
+        if(lastEndingScreenNum === 12) {
+            document.getElementById('obstacle').style.display = 'block';
+            document.getElementById('road-lines').classList.add('lines-paused');
+            document.getElementById('active-vehicle').classList.add('vehicle-paused');
+            applyRoadVisuals(currentRoad);
+        } else {
+            const roadPlane = document.getElementById('road-plane');
+            roadPlane.className = "road-plane leave-ramp";
+        }
+        nextScreen(lastEndingScreenNum);
+    }
+</script>
+</body>
+</html>
