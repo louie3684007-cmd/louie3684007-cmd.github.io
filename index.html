@@ -77,7 +77,7 @@
         }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* 長髮側臉輪廓呼吸動畫結構 */
+        /* 長髮側臉輪廓呼吸動畫 */
         .breath-container { width: 220px; height: 180px; position: relative; margin: 15px auto; }
         .head-profile {
             width: 120px; height: 150px; background: linear-gradient(135deg, rgba(0, 245, 255, 0.25), rgba(0, 153, 255, 0.1)); 
@@ -159,7 +159,7 @@
         .lines-paused { animation-play-state: paused !important; }
         @keyframes drive { from { bottom: 0; } to { bottom: -75px; } }
         
-        /* 塞車背景景物層 */
+        /* 塞車景物 */
         .traffic-jam-layer { position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; z-index: 1; display: none; font-size: 40px; }
         .jam-car { position: absolute; left: 46%; animation: carVibrate 0.1s infinite alternate; }
         @keyframes carVibrate { from { transform: translate(0, 0); } to { transform: translate(1px, 1px); } }
@@ -188,10 +188,10 @@
         .hand-btn:hover { border-color: var(--color-main); background: rgba(0, 255, 204, 0.08); }
         .hand-btn.selected-correct { border-color: var(--color-main) !important; background: rgba(0, 255, 204, 0.4) !important; box-shadow: 0 0 15px var(--color-main); }
 
-        /* 文字面板自適應 + 貼頂校正 */
+        /* 文字面板面板 */
         .scroll-panel {
             background: rgba(0,0,0,0.85); border: 1px solid var(--color-main); 
-            padding: 12px 22px 22px 22px; /* 緊湊上邊距 */
+            padding: 12px 22px 22px 22px;
             border-radius: 10px;
             height: auto; max-height: 42vh; overflow-y: auto; text-align: center; width: 90%; max-width: 600px; z-index: 10; margin: 0 auto 20px auto;
             white-space: pre-wrap; line-height: 1.8; letter-spacing: 0.5px; display: block;
@@ -209,12 +209,11 @@
         .click-area {
             position: absolute; left: 50%; transform: translate(-50%, -50%); display: flex; align-items: center; justify-content: center;
             background: rgba(0, 255, 204, 0.1); border: 2px dashed var(--color-main); border-radius: 50px; cursor: pointer;
-            color: transparent; /* 💡 初始文字維持隱形 */
+            color: transparent;
         }
         .click-area.selected-correct { background: rgba(0, 255, 204, 0.6) !important; border-style: solid; color: #fff !important; }
         .click-area:hover { background: rgba(0, 255, 204, 0.4); }
         
-        /* 🎯 您調整好、最精準的人臉按鈕高度位置 */
         #area-forehead { top: 35%; width: 70px; height: 35px; } 
         #area-eyes { top: 50%; width: 70px; height: 25px; }
 
@@ -224,6 +223,48 @@
         #heaven-bg { position: absolute; top:0; left:0; width:100%; height:100%; background: radial-gradient(circle, #fffbcc 0%, #ffcc00 100%); opacity: 0; pointer-events: none; transition: 2s; z-index: 999; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box;}
         #heaven-text { font-size: var(--font-size-title); font-weight: bold; text-shadow: 0 0 15px rgba(0,0,0,0.6); max-width: 600px; line-height: 1.8; text-align: center; white-space: pre-wrap;}
         .ending-btn-group { display: flex; gap: 15px; margin-top: 30px; }
+
+        /* =================================================== */
+        /* 💡 核心升級：全新加入手機直向螢幕（響應式）自適應 CSS */
+        /* =================================================== */
+        @media screen and (max-width: 767px) and (orientation: portrait) {
+            :root {
+                --font-size-title: 24px; /* 手機版標題字體微縮 */
+                --font-size-text: 15px;  /* 手機版文字大小優化，最適合長篇閱讀 */
+            }
+            .screen { padding: 10px; justify-content: flex-start; padding-top: 30px; overflow-y: auto; } /* 允許手機端長滾動防止溢出 */
+            
+            /* 文字面板手機化自適應 */
+            .scroll-panel, .text-box { width: 95%; max-height: 35vh; padding: 10px 15px; font-size: var(--font-size-text); }
+            
+            /* 修正：道路選項在手機上自動切換成雙行、圖標縮小，絕不互相壓扁擠爆 */
+            .road-tier .grid-options { grid-template-columns: repeat(2, 1fr) !important; gap: 8px; }
+            .road-tier .grid-item { padding: 4px; border-radius: 5px; }
+            .road-tier .grid-item span { font-size: 11px; margin-top: 2px; }
+            .road-sign-container { width: 34px; height: 34px; }
+            .tw-meihua, .tw-shield-red, .tw-shield-blue { width: 28px; height: 28px; font-size: 11px; }
+            .tw-square-black { width: 26px; height: 26px; font-size: 11px; }
+            .tw-rect-black { width: 34px; height: 24px; font-size: 10px; }
+            
+            /* 修正：交通工具卡片轉為 2x2 四格矩陣結構 */
+            .vehicle-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px; width: 95%; }
+            .vehicle-card { padding: 12px 5px; border-radius: 10px; }
+            .vehicle-icon { font-size: 32px; margin-bottom: 6px; }
+            .vehicle-name { font-size: 13px; }
+
+            /* 手機版手勢按鈕微縮 */
+            .hand-btn-box { width: 95%; gap: 10px; }
+            .hand-btn { padding: 10px; font-size: 13px; border-radius: 8px; }
+
+            /* 手機版人臉框縮放 */
+            .face-container { width: 240px; height: 304px; background-size: 180%; }
+            #area-forehead { width: 55px; height: 28px; }
+            #area-eyes { width: 55px; height: 22px; }
+            
+            /* 行駛動畫在手機上的主車比例調整 */
+            .vehicle-anim { font-size: 45px; bottom: 18%; }
+            .traffic-jam-layer { font-size: 28px; }
+        }
     </style>
 </head>
 <body>
@@ -323,7 +364,7 @@
             <div class="grid-options">
                 <div class="grid-item" onclick="selectRoad('expressway')">
                     <div class="road-sign-container"><div class="tw-shield-red">61</div></div>
-                    <span>儒教 (快速道路)</span>
+                    <span>儒教 (快速)</span>
                 </div>
                 <div class="grid-item" onclick="selectRoad('provincial')">
                     <div class="road-sign-container"><div class="tw-shield-blue">1</div></div>
@@ -453,6 +494,7 @@
     <button class="prev-btn" onclick="nextScreen('12')">⬅️ 返回上一步</button>
 </div>
 
+<!-- 結局遮罩 -->
 <div id="heaven-bg">
     <div id="heaven-text"></div>
     <div class="ending-btn-group">
@@ -472,7 +514,7 @@
         difficultyText: "我們在人生以及修道的路上，一定會遭遇到許多意想不到的困難...如同畫面呈現的前方路況塞車結果卡在車陣中了！\n生活或工作上遇到煩心的事情，導致心神不寧\n與週遭的人(家人/親人/同事/朋友...)發生爭執心情不順\n不知道如何解決困難",
         diffWrongHint1: "怨天尤人應該是無法從根本解決問題喲！請再想想還有什麼更好的辦法。",
         diffWrongHint3: "隨緣可能就會隨波逐流(跟隨滾滾紅塵 晃來晃去~) 我們走在修行路上應該要選擇更有智慧的方式！！",
-        treasureIntroText: "「何謂三寶??」多方探詢後，想分享以下的見解讓各位學長參考\n 壹. 三寶就是上天賜予眾生，修道時候能使用的工具，主要幫助眾生解決修道路上遇到的各種困難\n 貳. 三寶也像一顆種子，可以讓我們探索根本，找回赤子之心就能回歸本性；這過程經歷的種種都是長出的根或葉子，就好像我們用三寶延伸去看世界，也是因為了解這個源頭才能遇萬難也抵萬難\n 叁. 三寶亦是與仙佛溝通的媒介，讓我們有個可以跟仙佛產生聯繫的通路",
+        treasureIntroText: "「何謂三寶??」多方探詢後，想分享以下的見解讓各位學長參考\n 壹. 三寶就是上天賜予眾生，修道時候能使用的工具，主要幫助眾生解決修道路上遇到的各種困難\n 貳. 三寶也像一顆種子，可以讓我們探索根本，找回赤子之心就能回歸本性；這過程經歷的種種都是長出的根或葉子，就好像我們用三寶延伸去看世界，也是因為了解這個源頭才能遇萬難也抵萬難",
         treasure1Desc: "Bingo！！\n玄關竅：靈魂進出的大門，人回去後靈魂要從這個正門出來後往天堂而去\n仙佛幫我們在這邊打開門以外也點了一盞光明燈，可以被動地幫我們防禦外來不好的東西。",
         treasure1WrongHint: "不對呦！玄關竅並不是在額頭喔~~ 而是在兩眼連線中間最凹陷的地方",
         treasure2Desc: "Congratulation！！\n合同(佛手印)：就是一把鑰匙可以用來跟上天產生連結，所以當我們歸天要回去天堂的時候，也是要對合同的才知道你是不是上天在等的那個人",
@@ -480,7 +522,7 @@
         treasure3Desc: "無字真言有五個字：\"XXXXX\"，這真言就是一個口號/密語/即刻救援的信號，無論遇到什麼困難都可以使用無字真言，仙佛會瞬間到達身邊來幫助我們~~~",
         treasureUsageText: "三寶使用時機：1.遇到困難 2.心情煩悶 3.不知如何是好 4.無時無刻\n三寶如何使用：手抱合同放在胸前(看狀況也可以放在肚肚，比較不突兀)，接著心中默念無字真言\"三次\"，白陽弟子XXX，住居(或當下位置)在中華民國(台灣省)XXXXXX，請一尊自己最有緣的仙佛(耶穌、聖母瑪利亞、阿拉、阿彌陀佛、觀世音普薩、濟公老師...都可以)，弟子遇到XXXXX請求仙佛慈悲幫忙，感恩慈悲(點五個頭答謝！)",
         obstacleQuestion: "修道的路長途漫漫，突然出現了巨大的業力路障！\n脫離輪迴的神聖之路沒有那麼好走，上天總是會降下許多的考驗來測試修道者的真心與誠意。若您今日已在修行路上走了好久好久，卻遇到家裡不順(孩子叛逆、家庭不和、和伴侶有爭執、個性改不好等各種問題，您會想怎麼做呢？\n是否想過這些困難和問題，是不是業力在阻擋你順利回到天堂呢？因為這些冤親債主不願意看到您快樂地跳脫輪迴，又或是純粹是上天在測試我們呢？",
-        leaveHighwayDesc: "看來您已經做出選擇了：\"認為原本走的天路到了盡頭\"所以選擇走下交流道\n然而上天總是慈愛我們每一尊佛子，雖然我們暫時離開了高速天路但是上天中就一直為我們保留再回到高速天路的方式。所以我們這一世求的道生生世世都有效，即使這一輩子沒辦法修道圓滿走不到天路的終點，但是我們再輪迴轉世來修的時候，也能再度走回全真白陽的高速天路。\n當然只要我們這輩子還活著，隨時都可以再回到修行的路上，修道之路永遠為您而開。",
+        leaveHighwayDesc: "看來您已經做出選擇了：\"認為原本走的天路到了盡頭\"所以選擇走下交流道\n然而上天總是慈愛我們每一尊佛子，雖然我們暫時離開了高速天路裝上天就一直為我們保留再回到高速天路的方式。所以我們這一世求的道生生世世都有效，即使這一輩子沒辦法修道圓滿走不到天路的終點，但是我們再輪迴轉世來修的時候，也能再度走回全真白陽的高速天路。\n當然只要我們這輩子還活著，隨時都可以再回到修行的路上，修道之路永遠為您而開。",
         endingMortalText: "紅塵滾滾/情路漫漫/高潮迭起 >> 緣分雖然沒有圓滿。\n\n但修道之路隨時為您敞開，盼早日迷途知返~~",
         endingHeavenText: "功德圓滿(收圓完成) >> 回歸無生理天！"
     };
@@ -588,13 +630,6 @@
         nextScreen(5);
     }
 
-    function returnToHighway() {
-        currentRoad = 'highway';
-        document.getElementById('return-highway-btn').style.display = 'none';
-        applyRoadVisuals('highway');
-        alert("明心見性亦明理！已順利沿著匝道重新回到最上層的天路！(全真白陽道)");
-    }
-
     function handleDiffChoice(ans) {
         const hint = document.getElementById('diff-hint');
         if(ans === 1) hint.innerText = USER_CONFIG.diffWrongHint1;
@@ -606,14 +641,12 @@
         }
     }
 
-    // 💡 完美結合點擊後字體顯現與重置透明度的 JavaScript 邏輯控制
     function checkFace(part) {
         const hint = document.getElementById('face-hint');
         const nextBtn = document.getElementById('btn-t1-next');
         const foreheadEl = document.getElementById('area-forehead');
         const eyesEl = document.getElementById('area-eyes');
         
-        // 點擊前，先將字體完全隱形重置
         foreheadEl.style.color = 'transparent';
         eyesEl.style.color = 'transparent';
         document.querySelectorAll('.click-area').forEach(el => el.classList.remove('selected-correct'));
@@ -621,14 +654,14 @@
         if(part === 'eyes') {
             hint.innerText = "【正確】";
             eyesEl.classList.add('selected-correct');
-            eyesEl.style.color = '#fff'; // 正確時，亮出白色文字
+            eyesEl.style.color = '#fff';
             
             document.getElementById('t1-desc').innerHTML = USER_CONFIG.treasure1Desc;
             document.getElementById('t1-desc').style.display = 'block';
             nextBtn.style.display = 'inline-block';
         } else {
             hint.innerText = USER_CONFIG.treasure1WrongHint;
-            foreheadEl.style.color = '#fff'; // 點錯時，也亮出被點擊到的文字名稱
+            foreheadEl.style.color = '#fff';
             
             document.getElementById('t1-desc').style.display = 'none';
             nextBtn.style.display = 'none';
@@ -716,10 +749,10 @@
         t.innerHTML = msg;
         if(isHeaven) {
             h.style.background = "radial-gradient(circle, #fffbcc 0%, #ffcc00 100%)";
-            h.style.color = "#2b1d04";
+            t.style.color = "#2b1d04"; /* 💡 結局黑底深字清晰化校對 */
         } else {
             h.style.background = "rgba(0,0,0,0.95)";
-            h.style.color = "#fff";
+            t.style.color = "#fff";
         }
         h.style.opacity = 1; h.style.pointerEvents = "auto";
     }
